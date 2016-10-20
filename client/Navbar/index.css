@@ -1,0 +1,23 @@
+.example-react-app-nav {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+
+  .example-react-app-logo {
+    animation: example-react-app-spin infinite 20s linear;
+    height: 80px;
+  }
+
+  .example-react-app-header {
+    font-family: cursive;
+    margin-top: 5px;
+    font-weight: 100;
+  }
+}
+
+@keyframes example-react-app-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

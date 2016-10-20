@@ -1,0 +1,17 @@
+.blog-list {
+  margin: 0 auto;
+  padding: 30px 50px 0;
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+.blog-add-post {
+  margin-bottom: 20px;
+}
+
+.blog-add-post-title,
+.blog-add-post-body {
+  margin: 5px 0 7px;
+  width: 100%;
+}
