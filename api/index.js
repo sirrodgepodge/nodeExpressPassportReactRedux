@@ -8,6 +8,9 @@ import startDbPromise from '../db';
 // instantiate express
 const api = express();
 
+// instantiate auth handler
+const auth = Router();
+
 // instantiate route handler
 const router = Router();
 
@@ -25,6 +28,9 @@ api.use(bodyParser.json());
 logger(api);
 
 startDbPromise.then(() => {
+  // handle auth
+  api.use('/auth', require('./auth').default(auth));
+
   // connect routes
   api.use('/api', require('./routes').default(router)); // we pass app instance into this function that adds routes
 

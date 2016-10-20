@@ -104,8 +104,8 @@ function onProxyError(proxy) {
   }
 }
 
-// proxy routes beginning with API
-const mayProxy = /^\/api\/.*$/;
+// proxy routes beginning with "api" or "auth"
+const mayProxy = /^(\/api\/|\/auth\/).*$/;
 const apiUrl = `${process.env.HTTPS ? 'https' : 'http'}://${process.env.HOST}:${process.env.APIPORT}`;
 
 function addMiddleware(devServer) {
