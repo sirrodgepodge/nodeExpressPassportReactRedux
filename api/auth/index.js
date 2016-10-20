@@ -1,13 +1,18 @@
 import passport from 'passport';
 import mongoose from 'mongoose';
 import expressJwt from 'express-jwt';
-import jwt from 'jsonwebtoken';
 
+// handlers
 import facebookHandling from './facebook';
 import googleHandling from './google';
 import localHandling from './local';
 
+// models
 const User = mongoose.model('User');
+
+// utils
+import cleanUserObj from './utils/cleanUserObj';
+import setJwt from './utils/setJwt';
 
 
 export default api => {
@@ -60,21 +65,3 @@ export default api => {
 
   return api;
 };
-
-
-function setJwt(req, res) {
-  const expiresIn = process.env.JWT_LENGTH || 60 * 60 * 24 * 180 * 1000; // default to 180 days
-  const token = jwt.sign({ _id: req.user._id.toString() }, process.env.JWT_SECRET, { expiresIn });
-  res.cookie('auth_token', token, {
-    maxAge: expiresIn,
-    httpOnly: true
-  });
-}
-
-
-function cleanUserObj(user) {
-  user.hasPassword = !!user.password;
-  delete user.password;
-  delete user.salt;
-  return user;
-}

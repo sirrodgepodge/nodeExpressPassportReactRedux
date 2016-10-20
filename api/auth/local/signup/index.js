@@ -4,6 +4,8 @@ const User = mongoose.model('User');
 
 // utility
 import _ from 'lodash';
+import cleanUserObj from '../../utils/cleanUserObj';
+
 
 export default api => api.post('/signup', signupMiddleWare)
 
@@ -22,7 +24,7 @@ export function signupMiddleWare(req, res, next) {
           return next(loginErr);
         }
 
-        req.user = storedUser.toObject(); // converting from mongoose object to regular object
+        req.user = cleanUserObj(storedUser);
         next();
       }))
       .catch(error => res.status(401).json(error));

@@ -4,6 +4,7 @@ import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth';
 
 // utilities
 import _ from 'lodash';
+import setJwt from '../utils/setJwt';
 
 // models
 import mongoose from 'mongoose';
@@ -52,7 +53,10 @@ const passportAuthCb = passport.authenticate('google', {
   session: false
 });
 
-const passportAuthCbCb = (req, res, next) => next();
+const passportAuthCbCb = (req, res) => {
+  setJwt(req, res);
+  res.redirect('/');
+}
 
 export default api => {
   api.get('/google', passportAuth);

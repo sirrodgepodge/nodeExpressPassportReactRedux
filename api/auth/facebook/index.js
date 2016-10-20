@@ -4,6 +4,7 @@ import {Strategy as FacebookStrategy} from 'passport-facebook';
 
 // utilities
 import _ from 'lodash';
+import setJwt from '../utils/setJwt';
 
 // models
 import mongoose from 'mongoose';
@@ -51,7 +52,10 @@ const passportAuthCb = passport.authenticate('facebook', {
   session: false
 });
 
-const passportAuthCbCb = (req, res, next) => next();
+const passportAuthCbCb = (req, res) => {
+  setJwt(req, res);
+  res.redirect('/');
+}
 
 export default app => {
   app.get('/facebook', passportAuth);
