@@ -1,28 +1,31 @@
 // Component here uses ES6 destructuring syntax in import, what is means is "retrieve the property 'Component' off of the object exported from the 'react'"
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import request from './utils/request';
+
+// action creators
+import { initializationRequests } from './redux/actionCreators';
 
 // other components
 import Navbar from './Navbar';
 import Blog from './Blog';
 
-
 // this will bring this CSS file into build
 import './App.css';
 
-class App extends Component {
+
+@connect()
+export default class App extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired
+  }
+
   state = {
     posts: []
   }
 
   componentDidMount() {
-    // retrieve app initialization data once root component has mounted
-    request.get('/api/post')
-      .then(res =>
-        this.setState({
-          posts: res.data.sort((a,b) => b.createdDate - a.createdDate) // sort posts newest to oldest
-        })
-      ).catch(err => console.log(err));
+    this.props.dispatch(initializationRequests());
   }
 
   addPost = postState => {
@@ -77,5 +80,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

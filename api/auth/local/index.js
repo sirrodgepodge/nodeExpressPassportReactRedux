@@ -15,6 +15,10 @@ passport.use(new LocalStrategy({
   session: false,
 }, strategyFn));
 
+// need these even though we don't have session due to library bug
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
+
 // When passport.authenticate('local') is used, this function will receive
 // the email and password to run the actual authentication logic.
 function strategyFn(email, password, done) {
