@@ -22,7 +22,10 @@ export default api => {
 
     User.findById(userId)
       .then(user => _.merge(user, {password}).save())
-      .then(() => res.status(200).send())
+      .then(savedUser => {
+        req.user = savedUser;
+        next();
+      })
       .catch(err => next(err));
   });
 };
