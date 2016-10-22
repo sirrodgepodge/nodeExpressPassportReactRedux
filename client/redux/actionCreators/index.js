@@ -32,10 +32,12 @@ export function localAuth(user) {
   };
 }
 
-export function localAuthRequest(email, password) {
+export function localAuthRequest(_id, email, password) {
+  const addingPassword = !!_id;
   return dispatch => request.post({
-    route: '/auth/login',
+    route: addingPassword ? '/auth/addPassword' : '/auth/login',
     body: {
+      _id: _id,
       email: email,
       password: password
     }

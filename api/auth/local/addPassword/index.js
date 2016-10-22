@@ -26,6 +26,6 @@ export default api => {
         req.user = savedUser;
         next();
       })
-      .catch(err => next(err));
+      .catch(next);
   });
 };

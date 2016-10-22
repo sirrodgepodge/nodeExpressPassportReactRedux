@@ -36,7 +36,9 @@ export default class NavAuth extends Component {
   handleLocalAuth = () => {
     const email = this.refs.email && this.refs.email.value;
     const password = this.refs.password && this.refs.password.value;
-    this.props.dispatch(localAuthRequest(email, password));
+    this.props.dispatch(
+      localAuthRequest(this.props.user ? this.props.user._id : null, email, password)
+    );
   }
 
   logout = () => this.props.dispatch(logoutRequest());
