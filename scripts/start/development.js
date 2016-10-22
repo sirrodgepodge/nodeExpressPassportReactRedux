@@ -2,15 +2,16 @@ import chalk from 'chalk'; // eslint-disable-line
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import historyApiFallback from 'connect-history-api-fallback';
-import httpProxyMiddleware from 'http-proxy-middleware';
 import detect from 'detect-port';
 import clearConsole from 'react-dev-utils/clearConsole';
 import checkRequiredFiles from 'react-dev-utils/checkRequiredFiles';
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
 import openBrowser from 'react-dev-utils/openBrowser';
 import prompt from 'react-dev-utils/prompt';
+import proxyHandling from './util/proxyHandling';
 import config from '../../config/webpack.config.dev';
 import paths from '../../config/paths';
+
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
@@ -78,37 +79,10 @@ function setupCompiler(host, port, protocol) {
   });
 }
 
-// We need to provide a custom onError function for httpProxyMiddleware.
-// It allows us to log custom error messages on the console.
-function onProxyError(proxy) {
-  return function(err, req, res){
-    const host = req.headers && req.headers.host;
-    console.log(
-      chalk.red('Proxy error:') + ' Could not proxy request ' + chalk.cyan(req.url) +
-      ' from ' + chalk.cyan(host) + ' to ' + chalk.cyan(proxy) + '.'
-    );
-    console.log(
-      'See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (' +
-      chalk.cyan(err.code) + ').'
-    );
-    console.log();
-
-    // And immediately send the proper error response to the client.
-    // Otherwise, the request will eventually timeout with ERR_EMPTY_RESPONSE on the client side.
-    if (res.writeHead && !res.headersSent) {
-        res.writeHead(500);
-    }
-    res.end(
-      `Proxy error: Could not proxy request ${req.url} from ${host} to ${proxy} (${err.code}).`
-    );
-  }
-}
-
-// proxy routes beginning with "api" or "auth"
-const mayProxy = /^(\/api\/|\/auth\/).*$/;
-const apiUrl = `${process.env.HTTPS ? 'https' : 'http'}://${process.env.HOST}:${process.env.APIPORT}`;
-
 function addMiddleware(devServer) {
+  // handle proxying for routes beginning with to "api"
+  proxyHandling(devServer);
+
   devServer.use(historyApiFallback({
     // Paths with dots should still use the history fallback.
     // See https://github.com/facebookincubator/create-react-app/issues/387.
@@ -123,17 +97,6 @@ function addMiddleware(devServer) {
     htmlAcceptHeaders: ['text/html']
   }));
 
-  devServer.use(mayProxy,
-    // Pass the scope regex both to Express and to the middleware for proxying
-    // of both HTTP and WebSockets to work without false positives.
-    httpProxyMiddleware(pathname => mayProxy.test(pathname), {
-      target: apiUrl,
-      logLevel: 'silent',
-      onError: onProxyError(apiUrl),
-      secure: false,
-      changeOrigin: true
-    })
-  );
   // Finally, by now we have certainly resolved the URL.
   // It may be /index.html, so let the dev server try serving it again.
   devServer.use(devServer.middleware);
