@@ -40,14 +40,20 @@ export default class BlogPost extends Component {
         {
           this.props.post.google_link
           &&
-          <a href={this.props.post.google_link} className="author-google">
+          <a
+            href={this.props.post.google_link}
+            className="author-google"
+          >
             <i className="fa fa-google o-auth-btn"/>
           </a>
         }
         {
           this.props.post.facebook_link
           &&
-          <a href={this.props.post.facebook_link} className="author-facebook">
+          <a
+            href={this.props.post.facebook_link}
+            className="author-facebook"
+          >
             <i className="fa fa-facebook o-auth-btn"/>
           </a>}
         {
@@ -55,10 +61,16 @@ export default class BlogPost extends Component {
           (!this.props.post.email || this.props.post.email === this.props.userEmail)
           &&
           <div>
-            <button className="delete-post" onClick={this.delete}>
+            <button
+              className="delete-post"
+              onClick={this.delete}
+            >
               Delete Post
             </button>
-            <button className="update-post" onClick={this.edit}>
+            <button
+              className="update-post"
+              onClick={this.edit}
+            >
               Update Post
             </button>
           </div>

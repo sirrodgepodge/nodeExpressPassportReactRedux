@@ -12,12 +12,6 @@ import NavbarAuth from './NavbarAuth';
 
 
 export default class Navbar extends Component {
-  handleLocalAuth = () => {
-    const email = this.refs.email && this.refs.email.value;
-    const password = this.refs.password && this.refs.password.value;
-    this.props.localAuth(email, password);
-  }
-
   render() {
     return (
       <div className="example-react-app-nav">

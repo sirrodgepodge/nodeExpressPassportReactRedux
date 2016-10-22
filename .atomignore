@@ -8,6 +8,6 @@ npm-debug.log
 ### hiding to simplify
 build
 config
-# scripts
+scripts
 .eslintrc
 .gitignore

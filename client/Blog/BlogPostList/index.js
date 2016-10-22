@@ -31,19 +31,15 @@ export default class PostList extends Component {
     dispatch: PropTypes.func.isRequired
   }
 
-  editPost(post, index) {
-    this.props.dispatch(editPost({
-      updating: true,
-      title: post.title,
-      body: post.body,
-      editIndex: index,
-      editId: post._id
-    }));
-  }
+  editPost = ({ _id, title, body }, index) => this.props.dispatch(editPost({
+    updating: true,
+    editIndex: index,
+    editId: _id,
+    title,
+    body
+  }));
 
-  deletePost(_id) {
-    this.props.dispatch(deletePostRequest(_id));
-  }
+  deletePost = _id => this.props.dispatch(deletePostRequest(_id));
 
   render() {
     return (
@@ -54,8 +50,8 @@ export default class PostList extends Component {
               post={post}
               index={index}
               key={post._id}
-              delete={this.deletePost.bind(this)}
-              edit={this.editPost.bind(this)}
+              delete={this.deletePost}
+              edit={this.editPost}
               userEmail={this.props.userEmail}
             />
           )

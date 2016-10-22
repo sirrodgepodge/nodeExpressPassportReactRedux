@@ -34,37 +34,48 @@ export default class PostForm extends Component {
     dispatch: PropTypes.func.isRequired
   }
 
-  editPost(prop, event) {
-    this.props.dispatch(
-      editPost({
-        [prop]: event.target.value
-      })
-    );
-  }
+  editPost = prop => event => this.props.dispatch(
+    editPost({
+      [prop]: event.target.value
+    })
+  );
+  editTitle = this.editPost('title');
+  editBody = this.editPost('body');
 
-  addPost() {
-    this.props.dispatch(
-      addPostRequest({
-        ...this.props.postForm,
-        ...this.props.userInfo
-      })
-    );
-  }
+  addPost = () => this.props.dispatch(
+    addPostRequest({
+      ...this.props.postForm,
+      ...this.props.userInfo
+    })
+  );
 
-  updatePost() {
-    this.props.dispatch(
-      updatePostRequest(this.props.postForm)
-    );
-  }
+  updatePost = () => this.props.dispatch(
+    updatePostRequest(this.props.postForm)
+  );
 
   render() {
     return (
       <li className="blog-add-post">
-        <input className="blog-add-post-title" type="text" placeholder="Title" onChange={this.editPost.bind(this,'title')} value={this.props.postForm.title}/>
-        <textarea className="blog-add-post-body" placeholder="Body" onChange={this.editPost.bind(this,'body')} value={this.props.postForm.body}/>
-        <button onClick={this.props.postForm.updating &&
-                         this.updatePost.bind(this) ||
-                         this.addPost.bind(this)}>
+        <input
+          className="blog-add-post-title"
+          type="text"
+          placeholder="Title"
+          onChange={this.editTitle}
+          value={this.props.postForm.title}
+        />
+        <textarea
+          className="blog-add-post-body"
+          placeholder="Body"
+          onChange={this.editBody}
+          value={this.props.postForm.body}
+        />
+        <button
+          onClick={
+            this.props.postForm.updating &&
+            this.updatePost ||
+            this.addPost
+          }
+        >
           {`${this.props.postForm.updating ? 'Update' : 'Add'} Post`}
         </button>
       </li>

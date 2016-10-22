@@ -6,6 +6,7 @@ import BlogPostList from './BlogPostList';
 
 import './index.css';
 
+
 export default class Blog extends Component {
   render() {
     return (
