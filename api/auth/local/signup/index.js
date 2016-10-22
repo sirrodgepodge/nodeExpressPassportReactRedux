@@ -24,7 +24,7 @@ export function signupMiddleWare(req, res, next) {
           return next(loginErr);
         }
 
-        req.user = cleanUserObj(storedUser);
+        req.user = storedUser;
         next();
       }))
       .catch(error => res.status(401).json(error));

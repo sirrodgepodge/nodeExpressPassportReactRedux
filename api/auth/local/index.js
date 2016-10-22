@@ -15,10 +15,6 @@ passport.use(new LocalStrategy({
   session: false,
 }, strategyFn));
 
-// need these even though we don't have session due to library bug
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
-
 // When passport.authenticate('local') is used, this function will receive
 // the email and password to run the actual authentication logic.
 function strategyFn(email, password, done) {
@@ -26,7 +22,7 @@ function strategyFn(email, password, done) {
     .then(user =>
       // user.correctPassword is a method from the User schema.
       !user || !user.correctPassword(password) ?
-        done(null, false) :
+        done(null, null) :
         // Properly authenticated.
         done(null, user))
     .catch(err => done(err));

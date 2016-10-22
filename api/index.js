@@ -5,6 +5,7 @@ import PrettyError from 'pretty-error';
 import logger from 'morgan-body'; // modified classic logging library
 import startDbPromise from '../db';
 
+
 // instantiate express
 const api = express();
 
@@ -17,12 +18,12 @@ const router = Router();
 // instantiate pretty error
 const pretty = new PrettyError();
 
+// parses body + query on request
+api.use(bodyParser.urlencoded({extended: false}));
+api.use(bodyParser.json());
+
 // parses cookies on request
 api.use(cookieParser());
-
-// parses body + query on request
-api.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
-api.use(bodyParser.json());
 
 // connect logger
 logger(api);

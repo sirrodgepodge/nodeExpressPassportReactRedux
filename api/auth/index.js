@@ -16,6 +16,12 @@ import setJwt from './utils/setJwt';
 
 
 export default api => {
+  api.use(passport.initialize());
+
+  // need these even though we don't have session due to library bug
+  passport.serializeUser((user, done) => done(null, user));
+  passport.deserializeUser((user, done) => done(null, user));
+
   // will parse included JWT from cookie and set as req.jwt
   api.use(expressJwt({
     secret: process.env.JWT_SECRET,
@@ -30,19 +36,15 @@ export default api => {
     User.findById(req.jwt._id, null, { lean: true }) // lean gives us back plain object(not mongoose object)
       .then(user => {
         req.user = cleanUserObj(user); // remove password + salt
+        if (req.user) setJwt(req, res); // update jwt with new expiry
         next();
       })
       .catch(err => console.log(err))
   );
 
-  // Initialize passport and also allow it to read
-  api.use(passport.initialize());
-
   // Gets user off session if logged in (checked upon initial get request)
   api.get('/session', (req, res) => {
     if(!req.user) return res.status(200).json(null); // if no user is attached to request
-
-    setJwt(req, res); // update jwt with net timeout
     res.status(200).json(req.user)
   });
 
@@ -53,8 +55,8 @@ export default api => {
   });
 
   // handlers for different types of authentication
-  facebookHandling(api);
   googleHandling(api);
+  facebookHandling(api);
   localHandling(api);
 
   // all login types will want to do this

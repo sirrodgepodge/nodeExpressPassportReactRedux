@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { signupMiddleWare } from '../signup';
 
+
 export default api => {
   // A POST /login route is created to handle login.
   api.post('/login', (req, res, next) => {
@@ -23,7 +24,9 @@ export default api => {
         return signupMiddleWare(req, res, next);
       }
 
+      // if username and password was correct
       req.user = user;
+
       next();
     }
   });

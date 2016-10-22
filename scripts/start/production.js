@@ -7,7 +7,6 @@ const app = Express();
 
 // send API requests to API port
 const apiUrl = `${process.env.HTTPS ? 'https' : 'http'}://${process.env.HOST}:${process.env.APIPORT}`;
-const apiPath = /^(\/api\/|\/auth\/).*$/;
 
 const proxy = httpProxy.createProxyServer({
   target: apiUrl,
@@ -18,10 +17,15 @@ app.use(helmet()); // provides basic security checks
 app.use(compression()); // compresses responses
 
 // Proxy API requests to API server
-app.use(apiPath, (req, res) => {
-  console.log(req.path);
+app.use('/api', (req, res) => {
   proxy.web(req, res, {
-    target: `${apiUrl}${req.originalUrl}`
+    target: `${apiUrl}/api`
+  });
+});
+
+app.use('/auth', (req, res) => {
+  proxy.web(req, res, {
+    target: `${apiUrl}/auth`
   });
 });
 
