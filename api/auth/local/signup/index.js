@@ -4,7 +4,6 @@ const User = mongoose.model('User');
 
 // utility
 import _ from 'lodash';
-import cleanUserObj from '../../utils/cleanUserObj';
 
 
 export default api => api.post('/signup', signupMiddleWare)

@@ -34,13 +34,17 @@ export function localAuth(user) {
 
 export function localAuthRequest(_id, email, password) {
   const addingPassword = !!_id;
+  const route = addingPassword ? '/auth/addPassword' : '/auth/login';
+  const body = addingPassword ? {
+    _id,
+    email
+  } : {
+    email,
+    password
+  };
   return dispatch => request.post({
-    route: addingPassword ? '/auth/addPassword' : '/auth/login',
-    body: {
-      _id: _id,
-      email: email,
-      password: password
-    }
+    route,
+    body
   }).then(({ data: user }) =>
     dispatch(localAuth(user)));
 }
