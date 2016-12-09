@@ -19,10 +19,6 @@ export default class App extends Component {
     dispatch: PropTypes.func.isRequired
   }
 
-  state = {
-    posts: []
-  }
-
   componentDidMount() {
     this.props.dispatch(initializationRequests());
   }
@@ -31,12 +27,7 @@ export default class App extends Component {
     return (
       <div>
         <Navbar />
-        <Blog
-          posts={this.state.posts}
-          addPost={this.addPost}
-          updatePost={this.updatePost}
-          deletePost={this.deletePost}
-        />
+        <Blog />
       </div>
     );
   }

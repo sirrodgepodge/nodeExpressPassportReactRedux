@@ -8,7 +8,10 @@ require('dotenv').config({ silent: true });
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // default APIPORT to 3001
-process.env.APIPORT = process.env.APIPORT || 3001;
+process.env.APIPORT = process.env.APIPORT || process.env.PORT ? process.env.PORT + 1 : 3001;
+
+// default MongoDB to local
+process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/blogCollection';
 
 // enable ES6 in subsequent files
 require('babel-core/register');
