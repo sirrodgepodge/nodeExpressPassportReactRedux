@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 // configure mongoose to use native promises
 mongoose.Promise = global.Promise;
 
-const db = mongoose.connect('mongodb://localhost:27017/messageStorer').connection;
+const db = mongoose.connect(process.env.MONGODB_URI).connection;
 
 // add models to mongoose
 import './models'; // eslint-disable-line
