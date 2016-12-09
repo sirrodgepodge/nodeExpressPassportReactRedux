@@ -14,10 +14,7 @@ process.env.HOST = process.env.HOST || 'localhost';
 process.env.PORT = process.env.PORT || 3000;
 
 // default APIPORT to 3001
-process.env.APIPORT = process.env.APIPORT || process.env.PORT + 1;
-
-// default MongoDB to local
-process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/blogCollection';
+process.env.APIPORT = process.env.APIPORT || +process.env.PORT + 1;
 
 // enable ES6 in subsequent files
 require('babel-core/register');
